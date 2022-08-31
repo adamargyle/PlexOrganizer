@@ -28,8 +28,12 @@ do
     #check if destination folder already exists
     #remove unrated edition/director's cut/ etc or use the new edition tags for plex instead
     #check for file characters that might not be good (punctuation mostly)
+    # local title=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - | grep -i 'title' | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
+    # local year=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - | grep -i 'date' | grep -v -e "<" | grep -v -e 'synopsis' | grep -v -e 'description' |  cut -d '=' -f2 | cut -d '-' -f1 )
+
     local title=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - | grep -i 'title' | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
-    local year=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - | grep -i 'date' | grep -v -e "<" | grep -v -e 'synopsis' | grep -v -e 'description' |  cut -d '=' -f2 | cut -d '-' -f1 )
+    local year=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - | grep -i 'date' | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
+  
     local ext=$file:t:e
     local full_title="${title} (${year})"
 
