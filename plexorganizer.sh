@@ -22,14 +22,19 @@ do
         local ext=$file:t:e
         local full_title="${title} (${year})"
 
-        if [ ! -d "${destination}/${full_title}" ]
+        if [ ! -e "${destination}/${full_title}/${full_title}.${ext}" ]
         then
-            echo "creating directory ${destination}/${full_title}"
-            mkdir -p "${destination}/${full_title}"
-        fi
+            
+            if [ ! -d "${destination}/${full_title}" ]
+            then
+                echo "creating directory ${destination}/${full_title}"
+                mkdir -p "${destination}/${full_title}"
+            fi
 
-        echo "copying file to ${destination}/${full_title}/${full_title}.${ext}"
-        cp  "${file}" "${destination}/${full_title}/${full_title}.${ext}"
+            echo "copying file to ${destination}/${full_title}/${full_title}.${ext}"
+            cp  "${file}" "${destination}/${full_title}/${full_title}.${ext}"
+
+        fi
 
     elif [ "$media_type" = '10' ]
     then
@@ -41,20 +46,24 @@ do
         local full_title="${show} - s${season}e${episode} - ${title}"
         local ext=$file:t:e
 
-        if [ ! -d "${destination}/${show}" ]
+        if [ ! -e "${destination}/${show}/ Season ${season}/${full_title}.${ext}"]
         then
-            echo "creating directory ${destination}/${show}"
-            mkdir -p "${destination}/${show}"
-        fi
-        
-        if [ ! -d "${destination}/${show}/ Season ${season}" ]
-        then
-            echo "creating directory ${destination}/${show}/ Season ${season}"
-            mkdir -p "${destination}/${show}/ Season ${season}"
-        fi
 
-        echo "copying file to ${destination}/${show}/ Season ${season}/${full_title}.${ext}"
-        cp  "${file}" "${destination}/${show}/ Season ${season}/${full_title}.${ext}"
+            if [ ! -d "${destination}/${show}" ]
+            then
+                echo "creating directory ${destination}/${show}"
+                mkdir -p "${destination}/${show}"
+            fi
+
+            if [ ! -d "${destination}/${show}/ Season ${season}" ]
+            then
+                echo "creating directory ${destination}/${show}/ Season ${season}"
+                mkdir -p "${destination}/${show}/ Season ${season}"
+            fi
+
+            echo "copying file to ${destination}/${show}/ Season ${season}/${full_title}.${ext}"
+            cp  "${file}" "${destination}/${show}/ Season ${season}/${full_title}.${ext}"
+        fi
 
     fi
 
