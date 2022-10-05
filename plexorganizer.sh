@@ -39,8 +39,11 @@ do
         local ext=$file:t:e
         local full_title="${title} (${year})"
 
-        echo "creating directory ${destination}/${full_title}"
-        mkdir -p "${destination}/${full_title}"
+        if [ ! -d "${destination}/${full_title}" ]
+        then
+            echo "creating directory ${destination}/${full_title}"
+            mkdir -p "${destination}/${full_title}"
+        fi
 
         echo "copying file to ${destination}/${full_title}/${full_title}.${ext}"
         cp  "${file}" "${destination}/${full_title}/${full_title}.${ext}"
@@ -49,16 +52,24 @@ do
     then
         local show=$(grep -i 'show' <<<$metadata | cut -d '=' -f2)
         local season=$(grep -i 'season_number' <<<$metadata | cut -d '=' -f2)
-        local episode=$(grep -i 'track' <<<$metadata | cut -d '=' -f2)
+        local episode=$(grep -i 'episode_sort' <<<$metadata | cut -d '=' -f2)
         local title=$(grep -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
         local year=$(grep -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
+        local full_title="${show} (${year}) - s${season}e${episode} - ${title}"
         local ext=$file:t:e
-        if [ -e "${destination}/${show}" ]
-        then
-            mkdir -p "${destination}/${show}/${season}"
-        else
 
+        if [ ! -d "${destination}/${show}" ]
+        then
+            echo "creating directory ${destination}/${show}"
+            mkdir -p "${destination}/${show}"
+        elif [ ! -d "${destination}/${show}/ Season ${season}" ]
+        then
+            echo "creating directory ${destination}/${show}/ Season ${season}"
+            mkdir -p "${destination}/${show}/ Season ${season}"
         fi
+
+        echo "copying file to ${destination}/${show}/ Season ${season}/${full_title}.${ext}"
+        cp  "${file}" "${destination}/${show}/ Season ${season}/${full_title}.${ext}"
 
     fi
 
