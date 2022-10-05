@@ -45,7 +45,9 @@ do
         then
             echo "creating directory ${destination}/${show}"
             mkdir -p "${destination}/${show}"
-        elif [ ! -d "${destination}/${show}/ Season ${season}" ]
+        fi
+        
+        if [ ! -d "${destination}/${show}/ Season ${season}" ]
         then
             echo "creating directory ${destination}/${show}/ Season ${season}"
             mkdir -p "${destination}/${show}/ Season ${season}"
