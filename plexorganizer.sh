@@ -55,7 +55,7 @@ do
         local episode=$(grep -i 'episode_sort' <<<$metadata | cut -d '=' -f2)
         local title=$(grep -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
         local year=$(grep -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
-        local full_title="${show} (${year}) - s${season}e${episode} - ${title}"
+        local full_title="${show} - s${season}e${episode} - ${title}"
         local ext=$file:t:e
 
         if [ ! -d "${destination}/${show}" ]
