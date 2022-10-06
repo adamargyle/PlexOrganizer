@@ -10,7 +10,11 @@ for file in $source/*
 do
 
     # remove unrated edition/director's cut/ etc or use the new edition tags for plex instead
-    # check for file characters that might not be good (punctuation mostly)
+    # count files copied and echo at the end the number of files copied successfully
+    # need loops to be able to go through folders inside the main folder
+    # option to rename files in the same folder instead of copying them
+    # check for file characters that are not valid (punctuation mostly) and total character count
+    # log errors
 
     local metadata=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - )
     local media_type=$(grep -i 'media_type' <<<$metadata | cut -d '=' -f2)
