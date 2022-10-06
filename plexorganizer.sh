@@ -17,14 +17,13 @@ do
     
     if [ "$media_type" = '9' ]
     then
-        local title=$(grep -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
-        local year=$(grep -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
+        local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2)
+        local year=$(grep -m 1 -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
         local ext=$file:t:e
         local full_title="${title} (${year})"
 
         if [ ! -e "${destination}/${full_title}/${full_title}.${ext}" ]
         then
-            
             if [ ! -d "${destination}/${full_title}" ]
             then
                 echo "creating directory ${destination}/${full_title}"
@@ -38,15 +37,15 @@ do
 
     elif [ "$media_type" = '10' ]
     then
-        local show=$(grep -i 'show' <<<$metadata | cut -d '=' -f2)
-        local season=$(grep -i 'season_number' <<<$metadata | cut -d '=' -f2)
-        local episode=$(grep -i 'episode_sort' <<<$metadata | cut -d '=' -f2)
-        local title=$(grep -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
-        local year=$(grep -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
+        local show=$(grep -m 1 -i 'show' <<<$metadata | cut -d '=' -f2)
+        local season=$(grep -m 1 -i 'season_number' <<<$metadata | cut -d '=' -f2)
+        local episode=$(grep -m 1 -i 'episode_sort' <<<$metadata | cut -d '=' -f2)
+        local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
+        local year=$(grep -m 1 -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
         local full_title="${show} - s${season}e${episode} - ${title}"
         local ext=$file:t:e
 
-        if [ ! -e "${destination}/${show}/ Season ${season}/${full_title}.${ext}"]
+        if [ ! -e "${destination}/${show}/Season ${season}/${full_title}.${ext}" ]
         then
 
             if [ ! -d "${destination}/${show}" ]
@@ -55,14 +54,14 @@ do
                 mkdir -p "${destination}/${show}"
             fi
 
-            if [ ! -d "${destination}/${show}/ Season ${season}" ]
+            if [ ! -d "${destination}/${show}/Season ${season}" ]
             then
-                echo "creating directory ${destination}/${show}/ Season ${season}"
-                mkdir -p "${destination}/${show}/ Season ${season}"
+                echo "creating directory ${destination}/${show}/Season ${season}"
+                mkdir -p "${destination}/${show}/Season ${season}"
             fi
 
-            echo "copying file to ${destination}/${show}/ Season ${season}/${full_title}.${ext}"
-            cp  "${file}" "${destination}/${show}/ Season ${season}/${full_title}.${ext}"
+            echo "copying file to ${destination}/${show}/Season ${season}/${full_title}.${ext}"
+            cp  "${file}" "${destination}/${show}/Season ${season}/${full_title}.${ext}"
         fi
 
     fi
