@@ -15,7 +15,7 @@ do
         # remove unrated edition/director's cut/ etc or use the new edition tags for plex instead
         # count files copied and echo at the end the number of files copied successfully
         # option to rename files in the same folder instead of copying them
-        # check for file characters that are not valid (punctuation mostly) and total character count
+        # check for file characters that are not valid (punctuation mostly : to _) and total character count
         # log errors
 
         local metadata=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - )
