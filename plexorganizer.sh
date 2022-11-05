@@ -29,18 +29,18 @@ do
             local full_title="${clean_title} (${year})"
             
 
-            if [ ! -e "${destination}/${full_title}/${full_title}.${ext}" ]
+            if [ ! -e "${destination}/Movies/${full_title}/${full_title}.${ext}" ]
             then
-                if [ ! -d "${destination}/${full_title}" ]
+                if [ ! -d "${destination}/Movies/${full_title}" ]
                 then
-                    echo "creating directory ${destination}/${full_title}"
-                    mkdir -p "${destination}/${full_title}"
+                    echo "creating directory ${destination}/Movies/${full_title}"
+                    mkdir -p "${destination}/Movies/${full_title}"
                 fi
 
-                echo "copying file to ${destination}/${full_title}/${full_title}.${ext}"
-                cp  "${file}" "${destination}/${full_title}/${full_title}.${ext}"
+                echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
+                cp  "${file}" "${destination}/Movies/${full_title}/${full_title}.${ext}"
             else
-                echo "${destination}/${full_title}/${full_title}.${ext} exists, skipping file"
+                echo "${destination}/Movies/${full_title}/${full_title}.${ext} exists, skipping file"
 
             fi
 
@@ -55,25 +55,25 @@ do
             local full_title="${clean_show} - s${season}e${episode} - ${title}"
             local ext=$file:t:e
 
-            if [ ! -e "${destination}/${clean_show}/Season ${season}/${full_title}.${ext}" ]
+            if [ ! -e "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}" ]
             then
 
-                if [ ! -d "${destination}/${clean_show}" ]
+                if [ ! -d "${destination}/TV Shows/${clean_show}" ]
                 then
-                    echo "creating directory ${destination}/${clean_show}"
-                    mkdir -p "${destination}/${clean_show}"
+                    echo "creating directory ${destination}/TV Shows/${clean_show}"
+                    mkdir -p "${destination}/TV Shows/${clean_show}"
                 fi
 
-                if [ ! -d "${destination}/${clean_show}/Season ${season}" ]
+                if [ ! -d "${destination}/TV Shows/${clean_show}/Season ${season}" ]
                 then
-                    echo "creating directory ${destination}/${show}/Season ${season}"
-                    mkdir -p "${destination}/${clean_show}/Season ${season}"
+                    echo "creating directory ${destination}/TV Shows/${show}/Season ${season}"
+                    mkdir -p "${destination}/TV Shows/${clean_show}/Season ${season}"
                 fi
 
-                echo "copying file to ${destination}/${clean_show}/Season ${season}/${full_title}.${ext}"
-                cp  "${file}" "${destination}/${clean_show}/Season ${season}/${full_title}.${ext}"
+                echo "copying file to ${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
+                cp  "${file}" "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
             else
-                echo "${destination}/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
+                echo "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
             fi
 
         fi       
