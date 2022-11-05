@@ -6,7 +6,7 @@ readonly destination=$2
 echo "source is "$source
 echo "destination is "$destination
 
-for file in $source/* $source/*/* $source/*/*/*
+for file in $source/**/*
 do
     if [ -d "${file}" ]
     then
