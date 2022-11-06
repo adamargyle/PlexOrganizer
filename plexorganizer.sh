@@ -3,11 +3,11 @@
 readonly source=$1
 readonly destination=$2
 
-directory_count=0
-movie_count=0
-movie_skipped_count=0
-tvshow_count=0
-tvshow_skipped_count=0
+local directory_count=0
+local movie_count=0
+local movie_skipped_count=0
+local tvshow_count=0
+local tvshow_skipped_count=0
 
 echo "source is "$source
 echo "destination is "$destination
@@ -30,7 +30,6 @@ do
             local clean_title=${title//[:]/_}
             local full_title="${clean_title} (${year})"
             
-
             if [ ! -e "${destination}/Movies/${full_title}/${full_title}.${ext}" ]
             then
                 if [ ! -d "${destination}/Movies/${full_title}" ]
@@ -86,8 +85,8 @@ do
     fi
 
 done
-echo "file copy complete"
-echo "${directory_count} subdirectories scanned"
+echo "File copy complete"
+echo "${directory_count} Subdirectories scanned"
 echo "${movie_count} Movies copied"
 echo "${movie_skipped_count} Movies skipped (files already exist)"
 echo "${tvshow_count} TV Show Episodes copied"
