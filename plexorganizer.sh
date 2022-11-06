@@ -3,6 +3,12 @@
 readonly source=$1
 readonly destination=$2
 
+directory_count=0
+movie_count=0
+movie_skipped_count=0
+tvshow_count=0
+tvshow_skipped_count=0
+
 echo "source is "$source
 echo "destination is "$destination
 
@@ -11,12 +17,8 @@ do
     if [ -d "${file}" ]
     then
         echo "${file} is a directory"
+        ((directory_count++))
     else
-        # remove unrated edition/director's cut/ etc or use the new edition tags for plex instead
-        # count files copied and echo at the end the number of files copied successfully
-        # option to rename files in the same folder instead of copying them
-        # check for file characters that are not valid (punctuation mostly : to _) and total character count
-        # log errors
 
         local metadata=$(ffmpeg -y -loglevel error -i ${file} -f ffmetadata - )
         local media_type=$(grep -i 'media_type' <<<$metadata | cut -d '=' -f2)
@@ -39,8 +41,10 @@ do
 
                 echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
                 cp  "${file}" "${destination}/Movies/${full_title}/${full_title}.${ext}"
+                ((movie_count++))
             else
                 echo "${destination}/Movies/${full_title}/${full_title}.${ext} exists, skipping file"
+                ((movie_skipped_count++))
 
             fi
 
@@ -72,8 +76,10 @@ do
 
                 echo "copying file to ${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
                 cp  "${file}" "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
+                ((tvshow_count++))
             else
                 echo "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
+                ((tvshow_skipped_count++))
             fi
 
         fi       
@@ -81,3 +87,8 @@ do
 
 done
 echo "file copy complete"
+echo "${directory_count} subdirectories scanned"
+echo "${movie_count} Movies copied"
+echo "${movie_skipped_count} Movies skipped (files already exist)"
+echo "${tvshow_count} TV Show Episodes copied"
+echo "${tvshow_skipped_count} TV Episodes skipped (files already exist)"

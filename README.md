@@ -12,9 +12,9 @@ Requires `ffmpeg` to get metadata
 ## Notes:
 This is still a work in progress. Plans for futute iteration:
 - Filtering names by removing unneeded attributes like "Director's Cut" or "Unrated Editon" and if needed moving them to the plex supported structure.
+- Check for filenames that are too long, log error if it is too long (happens sometimes with metatdata formatting issues)
 - Optionally Remove/Delete the source files
 - Organize the folder you are in by simply moving the files into new folders with appropriate names.
 - Cleanup at the end by removing empty folders in the destination.
-- Optionally log the number of files successfully copied/moved.
 - Log errors such as filenames that are too long (this happens with some titles where the metadata seems to not be formatted correctly).
 - Rewrite entirely in python.
