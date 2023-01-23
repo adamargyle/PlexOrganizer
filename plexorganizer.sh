@@ -24,7 +24,7 @@ do
         local media_type=$(grep -i 'media_type' <<<$metadata | cut -d '=' -f2)
         if [ "$media_type" = '9' ]
         then
-            local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2)
+            local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "<")
             local year=$(grep -m 1 -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
             local ext=$file:t:e
             local clean_title=${title//[:]/_}
