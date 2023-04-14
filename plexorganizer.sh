@@ -49,7 +49,7 @@ do
 
         elif [ "$media_type" = '10' ]
         then
-            local show=$(grep -m 1 -i 'show' <<<$metadata | cut -d '=' -f2)
+            local show=$(grep -m 1 -i 'show=' <<<$metadata | cut -d '=' -f2)
             local season=$(grep -m 1 -i 'season_number' <<<$metadata | cut -d '=' -f2)
             local episode=$(grep -m 1 -i 'episode_sort' <<<$metadata | cut -d '=' -f2)
             local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
