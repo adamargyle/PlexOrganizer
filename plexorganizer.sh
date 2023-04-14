@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# author awickert, last updated 4/14/2023
+# organize tv shows and movies for plex libraries using metadata in the file
+
 readonly source=$1
 readonly destination=$2
 

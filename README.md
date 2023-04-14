@@ -17,4 +17,5 @@ This is still a work in progress. Plans for future iterations:
 - Organize the folder you are in by simply moving the files into new folders with appropriate names.
 - Cleanup at the end by removing empty folders in the destination.
 - Log errors such as filenames that are too long (this happens with some titles where the metadata seems to not be formatted correctly).
+- Add functions for some of the logic to allow for more options with less code
 - Rewrite entirely in python.
