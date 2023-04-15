@@ -58,7 +58,8 @@ do
             local title=$(grep -m 1 -i 'title' <<<$metadata | cut -d '=' -f2 | grep -v -e "Chapter" | grep -v -e "<")
             local year=$(grep -m 1 -i 'date' <<<$metadata | grep -v -e "<" | cut -d '=' -f2 | read -eu0 -k4)
             local clean_show=${show//[:]/_}
-            local full_title="${clean_show} - s${season}e${episode} - ${title}"
+            local clean_title=${title//[\/]/_}
+            local full_title="${clean_show} - s${season}e${episode} - ${clean_title}"
             local ext=$file:t:e
 
             if [ ! -e "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}" ]
