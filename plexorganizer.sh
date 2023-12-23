@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-# author awickert, last updated 4/14/2023
-# organize tv shows and movies for plex libraries using metadata in the file
+# author awickert, last updated 12/23/2023
+# organize tv shows and movies for plex libraries using metadata in the file via ffmpeg
 
 readonly source=$1
 readonly destination=$2
@@ -11,10 +11,22 @@ local movie_count=0
 local movie_skipped_count=0
 local tvshow_count=0
 local tvshow_skipped_count=0
+local copy_action=cp
 
-echo "source is "$source
-echo "destination is "$destination
+echo "Source is "$source
+echo "Destination is "$destination
 
+# check if the source and destination are the same, if so we will rename the files and folders instead of copying them
+if [[ "${source}" == "${destination}" ]]
+then
+    echo "Source and desintation are set to the same folder."
+    echo "Renaming files and folders in place."
+    copy_action=mv
+
+fi
+
+
+# check through each file in the soure directories metatdata with ffmpeg to pull out the movie title/show and year
 for file in $source/**/*
 do
     if [ -d "${file}" ]
@@ -35,14 +47,22 @@ do
             
             if [ ! -e "${destination}/Movies/${full_title}/${full_title}.${ext}" ]
             then
-                if [ ! -d "${destination}/Movies/${full_title}" ]
+                if [ -d "${destination}/Movies/${clean_title}" ] 
+                then
+                    echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
+                    mv  "${file}" "${destination}/Movies/${clean_title}/${full_title}.${ext}"
+                    echo "renaming directory to ${destination}/Movies/${full_title}"
+                    mv "${destination}/Movies/${clean_title}" "${destination}/Movies/${full_title}"
+
+                elif [ ! -d "${destination}/Movies/${full_title}" ]
                 then
                     echo "creating directory ${destination}/Movies/${full_title}"
                     mkdir -p "${destination}/Movies/${full_title}"
+                    echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
+                    cp  "${file}" "${destination}/Movies/${full_title}/${full_title}.${ext}"
+                   
                 fi
 
-                echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
-                cp  "${file}" "${destination}/Movies/${full_title}/${full_title}.${ext}"
                 ((movie_count++))
             else
                 echo "${destination}/Movies/${full_title}/${full_title}.${ext} exists, skipping file"
@@ -78,7 +98,7 @@ do
                 fi
 
                 echo "copying file to ${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
-                cp  "${file}" "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
+                $copy_action  "${file}" "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
                 ((tvshow_count++))
             else
                 echo "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
@@ -89,6 +109,7 @@ do
     fi
 
 done
+
 echo "File copy complete"
 echo "${directory_count} Subdirectories scanned"
 echo "${movie_count} Movies copied"
