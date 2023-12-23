@@ -97,11 +97,11 @@ do
                     mkdir -p "${destination}/TV Shows/${clean_show}/Season ${season}"
                 fi
 
-                echo "copying file to ${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
+                echo "copying file to ${destination}TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
                 $copy_action  "${file}" "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext}"
                 ((tvshow_count++))
             else
-                echo "${destination}/TV Shows/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
+                echo "${destination}TV Shows/${clean_show}/Season ${season}/${full_title}.${ext} exists, skipping"
                 ((tvshow_skipped_count++))
             fi
 
