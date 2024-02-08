@@ -81,12 +81,11 @@ do
             local clean_title=${title//[\/]/_}
             local full_title="${clean_show} - s${season}e${episode} - ${clean_title}"
             local ext=$file:t:e
+            local season_full="Season ${season}"
 
-            if $season == "0"
+            if [[ $season -eq "0" ]]
             then
-                local season_full="Specials"
-            else
-                local season_full="Season ${season}"
+                local season_full="Specials"      
             fi
 
             if [ ! -e "${destination}/TV Shows/${clean_show}/${season_full}/${full_title}.${ext}" ]
