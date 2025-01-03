@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-# author awickert, last updated 02/06/2023
+# author awickert, last updated 01/03/2025
 # organize tv shows and movies for plex libraries using metadata in the file via ffmpeg
 
 readonly source=$1
@@ -13,8 +13,22 @@ local tvshow_count=0
 local tvshow_skipped_count=0
 local copy_action=cp
 
-echo "Source is "$source
-echo "Destination is "$destination
+# check if source/destination are mounted, error and exit if they are not
+if [ -e "${source}" ] 
+then
+    echo "Source is "$source
+else 
+    echo "Error: Source is not mounted."
+    exit 1
+fi
+
+if [ -e "${destination}" ] 
+then
+    echo "Destination is "$destination
+else 
+    echo "Error: Destination is not mounted."
+    exit 1
+fi
 
 # check if the source and destination are the same, if so we will rename the files and folders instead of copying them
 if [[ "${source}" == "${destination}" ]]
@@ -24,7 +38,6 @@ then
     copy_action=mv
 
 fi
-
 
 # check through each file in the soure directories metatdata with ffmpeg to pull out the movie title/show and year
 for file in $source/**/*
@@ -49,23 +62,23 @@ do
             then
                 if [ -d "${destination}/Movies/${clean_title}" ] 
                 then
-                    echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
+                    echo "copying file to ${destination}Movies/${full_title}/${full_title}.${ext}"
                     mv  "${file}" "${destination}/Movies/${clean_title}/${full_title}.${ext}"
-                    echo "renaming directory to ${destination}/Movies/${full_title}"
+                    echo "renaming directory to ${destination}Movies/${full_title}"
                     mv "${destination}/Movies/${clean_title}" "${destination}/Movies/${full_title}"
 
-                elif [ ! -d "${destination}/Movies/${full_title}" ]
+                elif [ ! -d "${destination}Movies/${full_title}" ]
                 then
-                    echo "creating directory ${destination}/Movies/${full_title}"
+                    echo "creating directory ${destination}Movies/${full_title}"
                     mkdir -p "${destination}/Movies/${full_title}"
-                    echo "copying file to ${destination}/Movies/${full_title}/${full_title}.${ext}"
+                    echo "copying file to ${destination}Movies/${full_title}/${full_title}.${ext}"
                     cp  "${file}" "${destination}/Movies/${full_title}/${full_title}.${ext}"
                    
                 fi
 
                 ((movie_count++))
             else
-                echo "${destination}/Movies/${full_title}/${full_title}.${ext} exists, skipping file"
+                echo "${destination}Movies/${full_title}/${full_title}.${ext} exists, skipping file"
                 ((movie_skipped_count++))
 
             fi
@@ -93,21 +106,21 @@ do
 
                 if [ ! -d "${destination}/TV Shows/${clean_show}" ]
                 then
-                    echo "creating directory ${destination}/TV Shows/${clean_show}"
+                    echo "creating directory ${destination}TV Shows/${clean_show}"
                     mkdir -p "${destination}/TV Shows/${clean_show}"
                 fi
 
                 if [ ! -d "${destination}/TV Shows/${clean_show}/${season_full}" ]
                 then
-                    echo "creating directory ${destination}/TV Shows/${show}/${season_full}"
+                    echo "creating directory ${destination}TV Shows/${show}/${season_full}"
                     mkdir -p "${destination}/TV Shows/${clean_show}/${season_full}"
                 fi
 
-                echo "copying file to ${destination}/TV Shows/${clean_show}/${season_full}/${full_title}.${ext}"
+                echo "copying file to ${destination}TV Shows/${clean_show}/${season_full}/${full_title}.${ext}"
                 cp  "${file}" "${destination}/TV Shows/${clean_show}/${season_full}/${full_title}.${ext}"
                 ((tvshow_count++))
             else
-                echo "${destination}/TV Shows/${clean_show}/${season_full}/${full_title}.${ext} exists, skipping"
+                echo "${destination}TV Shows/${clean_show}/${season_full}/${full_title}.${ext} exists, skipping"
                 ((tvshow_skipped_count++))
             fi
 
